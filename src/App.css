@@ -1,7 +1,15 @@
-
-
-.cards{
+.container {
   display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.cards {
+  display: flex;
+  width: 100%;
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
@@ -11,7 +19,7 @@
   font-weight: 700;
 }
 
-.card{
+.card {
   width: 20%;
   height: 100px;
   background-color: rgb(227, 57, 57);
@@ -20,5 +28,31 @@
   justify-content: center;
   align-items: center;
   text-wrap: wrap;
+}
 
+p {
+  font-size: 32px;
+  color: aliceblue;
+}
+
+button {
+  background-color:  rgb(227, 57, 57);
+  border: none;
+  border-radius: 9px;
+ font-size: 18px;
+  padding: 15px 10px;
+  margin: 0 auto;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .card {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px;
+  }
+  .cards {
+    gap: 4px;
+    
+  }
 }
