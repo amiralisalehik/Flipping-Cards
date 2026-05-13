@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 let values = [
   "apple",
@@ -51,6 +51,8 @@ export default function useMemoryGame() {
   const [isGameOver, setIsGameOver] = useState(false);
 
   const [bestScore, setBestScore] = useState(getStoredBestScore);
+  const timeoutIdRef = useRef(null);
+  const gameOverTimeOut = useRef(null);
 
   function handleClick(clicedIndex) {
     if (isBoardLock) return;
@@ -83,7 +85,7 @@ export default function useMemoryGame() {
         setSelectedCards([]);
         setIsBoardLock(false);
       } else {
-        setTimeout(() => {
+        timeoutIdRef.current = setTimeout(() => {
           setCards((prevCards) =>
             prevCards.map((card, index) =>
               index === selectedCards[0] || index === selectedCards[1]
@@ -93,6 +95,7 @@ export default function useMemoryGame() {
           );
           setSelectedCards([]);
           setIsBoardLock(false);
+          timeoutIdRef.current = null;
         }, 600);
       }
     }
@@ -110,9 +113,10 @@ export default function useMemoryGame() {
       }
     }
     if (allMatched) {
-      setTimeout(() => {
+      gameOverTimeOut.current = setTimeout(() => {
         setIsGameOver(true);
       }, 1000);
+
       //handle best recored
       if (bestScore === null || moves < bestScore) {
         setBestScore(moves);
@@ -120,15 +124,32 @@ export default function useMemoryGame() {
         localStorage.setItem("memoryBestScore", newScore);
       }
     }
-  }, [cards]);
+  }, [cards, moves, bestScore, isGameOver]);
 
   function resetGame() {
+    if (timeoutIdRef.current) {
+      clearTimeout(timeoutIdRef.current);
+      timeoutIdRef.current = null;
+    }
+    if (gameOverTimeOut.current) {
+      clearTimeout(gameOverTimeOut.current);
+      gameOverTimeOut.current = null;
+    }
+
     setCards(createRandomCards());
     setSelectedCards([]);
     setIsBoardLock(false);
     setMoves(0);
     setIsGameOver(false);
   }
+
+  //clean up timers when component unmounts
+  useEffect(() => {
+    return () => {
+      if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+      if (gameOverTimeOut.current) clearTimeout(gameOverTimeOut);
+    };
+  }, []);
 
   return [cards, moves, isGameOver, handleClick, resetGame, bestScore];
 }
