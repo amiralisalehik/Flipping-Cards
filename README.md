@@ -1,4 +1,3 @@
-<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -26,5 +25,6 @@
       <li>Game over detection</li>
       <li>Restart button</li>
     </ul>
+
   </body>
 </html>

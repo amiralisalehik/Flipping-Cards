@@ -6,10 +6,10 @@ import useMemoryGame from "./components/hooks/useMemoryGame";
 
 
 function App() {
-  const [cards, moves , isGameOver , handleClick , resetGame]=useMemoryGame();
+  const [cards, moves , isGameOver , handleClick , resetGame , bestScore]=useMemoryGame();
   return (
     <div className="container">
-     <GameStats moves={moves} isGameOver={isGameOver} resetGame={resetGame}> </GameStats>
+     <GameStats moves={moves} isGameOver={isGameOver} resetGame={resetGame} bestScore={bestScore}> </GameStats>
      <Board cards={cards}  onCardClick={handleClick} disable={isGameOver}></Board>
     </div>
   );
